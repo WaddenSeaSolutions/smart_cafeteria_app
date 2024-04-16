@@ -11,8 +11,29 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      // navigateToScreens(index);
+       navigateToScreens(index);
     });
+  }
+
+  void navigateToScreens(int index) {
+    switch (index) {
+      case 0:
+      // Navigate to HomeScreen
+        Navigator.pushReplacementNamed(context, '/home');
+        break;
+      case 1:
+      // Navigate to OrderScreen
+        Navigator.pushReplacementNamed(context, '/order');
+        break;
+      case 2:
+      // Navigate to LoginScreen
+        Navigator.pushReplacementNamed(context, '/');
+        break;
+      default:
+      // Navigate to HomeScreen as default
+        Navigator.pushReplacementNamed(context, '/home');
+        break;
+    }
   }
 
   @override
