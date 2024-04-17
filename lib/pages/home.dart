@@ -11,7 +11,6 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: Text('Welcome to the Home Screen!'),
       ),
-      // bottomNavigationBar: BottomNavBarWidget(), // Add your BottomNavBarWidget here
     );
   }
 }

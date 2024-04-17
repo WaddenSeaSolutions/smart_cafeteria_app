@@ -81,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               InkWell(
                 onTap: () => {
-                  Navigator.push(context, ScaleRoute(page: SignUpPage()))
+                Navigator.pushReplacementNamed(context, '/signup')
                 },
                 child: Text(
                   "Sign Up",
