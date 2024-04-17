@@ -63,7 +63,7 @@ class _LoginFormState extends State<LoginForm> {
 
               if (isAuthenticated) {
                 // Navigate to the HomeScreen
-                Navigator.pushReplacementNamed(context, '/home');
+                Navigator.pushReplacementNamed(context, '/nav');
               }
             },
             child: Text('Login'),
@@ -81,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               InkWell(
                 onTap: () => {
-                  Navigator.push(context, ScaleRoute(page: SignUpScreen()))
+                  Navigator.push(context, ScaleRoute(page: SignUpPage()))
                 },
                 child: Text(
                   "Sign Up",

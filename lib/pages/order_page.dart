@@ -11,7 +11,7 @@ class OrderScreen extends StatelessWidget {
       body: Center(
         child: Text('Welcome to the Order Screen!'),
       ),
-      bottomNavigationBar: BottomNavBarWidget(), // Add your BottomNavBarWidget here
+      // bottomNavigationBar: BottomNavBarWidget(), // Add your BottomNavBarWidget here
     );
   }
 }
