@@ -11,7 +11,7 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-       navigateToScreens(index);
+      navigateToScreens(index);
     });
   }
 
@@ -53,10 +53,9 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
           icon: Icon(Icons.door_back_door),
           label: 'Logout',
         ),
-
       ],
       currentIndex: _selectedIndex,
-      selectedItemColor: Color(0xFFfd5352),
+      selectedItemColor: Colors.red,
       onTap: _onItemTapped,
     );
   }
