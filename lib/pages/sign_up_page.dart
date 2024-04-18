@@ -62,6 +62,31 @@ class _SignUpFormState extends State<SignUpForm> {
           },
           child: Text('Sign Up'),
         ),
+        SizedBox(height: 20.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center, // Align the Row to the center
+          children: <Widget>[
+            Text(
+              "Already have an account? ",
+              style: TextStyle(
+                color: Color(0xFF666666),
+                fontStyle: FontStyle.normal,
+              ),
+            ),
+            InkWell(
+              onTap: () => {
+                Navigator.pushReplacementNamed(context, '/')
+              },
+              child: Text(
+                "Log in",
+                style: TextStyle(
+                  color: Color(0xFFf7418c),
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

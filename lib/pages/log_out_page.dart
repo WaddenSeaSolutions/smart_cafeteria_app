@@ -16,7 +16,6 @@ class LogOutScreen extends StatelessWidget {
           child: Text('Log out'),
         ),
       ),
-      // bottomNavigationBar: BottomNavBarWidget(), // Add your BottomNavBarWidget here
     );
   }
 }
