@@ -1,9 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria_app/pages/sign_up_page.dart';
-
 import '../animation/scale_route.dart';
+import '../managers/websocket_manager.dart';
 
 class LoginPage extends StatelessWidget {
+  // Add a WebSocketManager parameter
+  final WebSocketManager webSocketManager;
+
+  // Constructor to accept WebSocketManager instance
+  LoginPage({required this.webSocketManager});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,12 +20,19 @@ class LoginPage extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
-        child: LoginForm(),
+        child: LoginForm(webSocketManager: webSocketManager), // Pass WebSocketManager to LoginForm
       ),
     );
   }
 }
+
 class LoginForm extends StatefulWidget {
+  // Add a WebSocketManager field
+  final WebSocketManager webSocketManager;
+
+  // Constructor to accept WebSocketManager instance
+  LoginForm({required this.webSocketManager});
+
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -49,23 +64,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           SizedBox(height: 20.0),
           ElevatedButton(
-            onPressed: () {
-              // Perform login functionality here
-              String username = _usernameController.text;
-              String password = _passwordController.text;
-
-              // For demo purposes, just print the username and password
-              print('Username: $username');
-              print('Password: $password');
-
-              // Check credentials (replace this with actual authentication logic)
-              bool isAuthenticated = true; // Assuming login is successful
-
-              if (isAuthenticated) {
-                // Navigate to the HomeScreen
-                Navigator.pushReplacementNamed(context, '/nav');
-              }
-            },
+            onPressed: _handleLogInButtonPress,
             child: Text('Login'),
           ),
           SizedBox(height: 20.0), // Added space for better readability
@@ -81,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               InkWell(
                 onTap: () => {
-                Navigator.pushReplacementNamed(context, '/signup')
+                  Navigator.pushReplacementNamed(context, '/signup')
                 },
                 child: Text(
                   "Sign Up",
@@ -103,5 +102,20 @@ class _LoginFormState extends State<LoginForm> {
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _handleLogInButtonPress(){
+    String username = _usernameController.text;
+    String password = _passwordController.text;
+
+    final registerUserData = {
+      'Type': 'login',
+      'Username': username,
+      'Password': password,
+    };
+
+    final jsonData = jsonEncode(registerUserData);
+
+    widget.webSocketManager.sendMessage(jsonData);
   }
 }

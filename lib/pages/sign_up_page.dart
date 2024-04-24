@@ -36,24 +36,7 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  StreamSubscription<String>? _webSocketSubscription;
 
-  @override
-  void initState() {
-    super.initState();
-    // Initialize WebSocket listener using the widget reference
-    _webSocketSubscription = widget.webSocketManager.getMessages().listen(
-            (data) {
-          // Handle server response
-          print('Response from server: $data');
-          // Navigate to another page or perform another action based on the response
-          Navigator.pushReplacementNamed(context, '/');
-        },
-        onError: (error) {
-          print('Error from WebSocket stream: $error');
-        }
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +93,6 @@ class _SignUpFormState extends State<SignUpForm> {
   @override
   void dispose() {
     // Dispose of the WebSocket listener and controllers
-    _webSocketSubscription?.cancel();
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
