@@ -56,6 +56,7 @@ class _LoginFormState extends State<LoginForm> {
         // Perform additional actions with the JWT token (e.g., navigate to another page, show a message)
         if (_jwtToken != null && _jwtToken!.isNotEmpty) {
           widget.jwtTokenStorage.storeJWTToken(_jwtToken!);
+          Navigator.pushReplacementNamed(context, '/nav');
           // You can now use the JWT token as needed (e.g., navigate to another page)
         }
       });
