@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria_app/managers/JWTTokenStorage.dart';
 import 'package:smart_cafeteria_app/pages/sign_up_page.dart';
 import '../animation/scale_route.dart';
 import '../managers/websocket_manager.dart';
@@ -8,9 +9,10 @@ import '../managers/websocket_manager.dart';
 class LoginPage extends StatelessWidget {
   // Add a WebSocketManager parameter
   final WebSocketManager webSocketManager;
+  final JWTTokenStorage jwtTokenStorage;
 
   // Constructor to accept WebSocketManager instance
-  LoginPage({required this.webSocketManager});
+  LoginPage({required this.webSocketManager, required this.jwtTokenStorage});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class LoginPage extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
-        child: LoginForm(webSocketManager: webSocketManager), // Pass WebSocketManager to LoginForm
+        child: LoginForm(webSocketManager: webSocketManager, jwtTokenStorage: jwtTokenStorage), // Pass WebSocketManager to LoginForm
       ),
     );
   }
@@ -29,9 +31,10 @@ class LoginPage extends StatelessWidget {
 class LoginForm extends StatefulWidget {
   // Add a WebSocketManager field
   final WebSocketManager webSocketManager;
+  final JWTTokenStorage jwtTokenStorage;
 
   // Constructor to accept WebSocketManager instance
-  LoginForm({required this.webSocketManager});
+  LoginForm({required this.webSocketManager, required this.jwtTokenStorage});
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -40,6 +43,25 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  String? _jwtToken;
+
+  @override
+  void initState() {
+    super.initState();
+    // Listen for incoming messages (e.g. the JWT token)
+    widget.webSocketManager.getMessages().listen((message) {
+      setState(() {
+        // Store the JWT token or perform any other actions
+        _jwtToken = message;
+        // Perform additional actions with the JWT token (e.g., navigate to another page, show a message)
+        if (_jwtToken != null && _jwtToken!.isNotEmpty) {
+          widget.jwtTokenStorage.storeJWTToken(_jwtToken!);
+          Navigator.pushReplacementNamed(context, '/nav');
+          // You can now use the JWT token as needed (e.g., navigate to another page)
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +102,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               InkWell(
                 onTap: () => {
-                  Navigator.pushReplacementNamed(context, '/signup')
+                  Navigator.pushNamed(context, '/signup')
                 },
                 child: Text(
                   "Sign Up",
