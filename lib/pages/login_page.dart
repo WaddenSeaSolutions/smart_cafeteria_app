@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -41,15 +42,20 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _usernameController = TextEditingController(text: "andreas123");
+  final _passwordController = TextEditingController(text: "11521152");
   String? _jwtToken;
+
+  late StreamSubscription<String> _subscription;
 
   @override
   void initState() {
     super.initState();
+    // Convert the stream to a broadcast stream
+    Stream<String> broadcastStream = widget.webSocketManager.getMessages();
+
     // Listen for incoming messages (e.g. the JWT token)
-    widget.webSocketManager.getMessages().listen((message) {
+    _subscription = broadcastStream.listen((message) {
       setState(() {
         // Store the JWT token or perform any other actions
         _jwtToken = message;
@@ -121,6 +127,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   void dispose() {
+    _subscription.cancel();
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -131,7 +138,7 @@ class _LoginFormState extends State<LoginForm> {
     String password = _passwordController.text;
 
     final registerUserData = {
-      'Type': 'login',
+      'action': 'login',
       'Username': username,
       'Password': password,
     };

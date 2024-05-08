@@ -8,13 +8,18 @@ class LogOutScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Log Out'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, '/');
-          },
-          child: Text('Log out'),
-        ),
+      body: Builder(
+        builder: (BuildContext context) {
+          return Center(
+            child: ElevatedButton(
+              onPressed: () {
+                // Navigate to the login screen
+                Navigator.pushReplacementNamed(context, '/login');
+              },
+              child: Text('Log out'),
+            ),
+          );
+        },
       ),
     );
   }

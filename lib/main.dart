@@ -30,9 +30,9 @@ class CafeteriaApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        '/': (context) => LoginPage(webSocketManager: webSocketManager, jwtTokenStorage: jwtTokenStorage),
+        '/login': (context) => LoginPage(webSocketManager: webSocketManager, jwtTokenStorage: jwtTokenStorage),
         '/home': (context) => HomeScreen(),
         '/order': (context) => OrderScreen(),
         '/signup': (context) => SignUpPage(webSocketManager: webSocketManager), // Pass WebSocketManager to the SignUpPage

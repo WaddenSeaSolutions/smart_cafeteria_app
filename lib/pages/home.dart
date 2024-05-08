@@ -30,6 +30,7 @@ class HomeScreen extends StatelessWidget {
               _cafeteriaItem('· Monster - 25kr', context),
               _cafeteriaItem('· Redbull - 25kr', context),
               _cafeteriaItem('· Kaffe - 10kr', context),
+              _cafeteriaItem('· Vandmelon - 100kr', context),
 
               // Add more items as needed
             ],
