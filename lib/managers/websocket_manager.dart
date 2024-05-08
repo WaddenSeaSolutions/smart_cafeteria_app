@@ -6,6 +6,8 @@ class WebSocketManager {
   // Static field for the singleton instance
   static final WebSocketManager _instance = WebSocketManager._internal();
 
+  late Stream<dynamic> _broadcastStream;
+
   // Private constructor for internal instantiation
   WebSocketManager._internal();
 
@@ -22,6 +24,7 @@ class WebSocketManager {
       return;
     }
     _channel = IOWebSocketChannel.connect(url);
+    _broadcastStream = _channel!.stream.asBroadcastStream();
   }
 
   // Method to send a message through the WebSocket
@@ -31,7 +34,7 @@ class WebSocketManager {
 
   // Method to get a stream of messages from the WebSocket
   Stream<String> getMessages() {
-    return _channel!.stream.map((data) => data as String);
+    return _broadcastStream.map((data) => data as String);
   }
 
   // Method to close the WebSocket connection

@@ -81,7 +81,7 @@ class _SignUpFormState extends State<SignUpForm> {
     String password = _passwordController.text;
 
     final registerUserData = {
-      'Type': 'register',
+      'action': 'register',
       'Username': username,
       'Password': password,
     };
