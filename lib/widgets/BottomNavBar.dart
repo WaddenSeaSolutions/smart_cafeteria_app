@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria_app/managers/websocket_manager.dart';
 import 'package:smart_cafeteria_app/pages/home.dart';
 import 'package:smart_cafeteria_app/pages/log_out_page.dart';
 import 'package:smart_cafeteria_app/pages/login_page.dart';
 import 'package:smart_cafeteria_app/pages/order_page.dart';
 
 class BottomNavBarWidget extends StatefulWidget {
+  final WebSocketManager webSocketManager;
+
+  BottomNavBarWidget({required this.webSocketManager});
+
   @override
   _BottomNavBarWidgetState createState() => _BottomNavBarWidgetState();
 }
@@ -34,7 +39,7 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
         controller: _pageController,
         children: [
           HomeScreen(),
-          OrderScreen(),
+          OrderScreen(webSocketManager: widget.webSocketManager), // Updated here
           LogOutScreen(),
         ],
         onPageChanged: (index) {
