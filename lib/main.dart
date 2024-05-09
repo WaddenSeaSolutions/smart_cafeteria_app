@@ -34,9 +34,9 @@ class CafeteriaApp extends StatelessWidget {
       routes: {
         '/login': (context) => LoginPage(webSocketManager: webSocketManager, jwtTokenStorage: jwtTokenStorage),
         '/home': (context) => HomeScreen(),
-        '/order': (context) => OrderScreen(),
+        '/order': (context) => OrderScreen(webSocketManager: webSocketManager), // Pass WebSocketManager to OrderScreen
         '/signup': (context) => SignUpPage(webSocketManager: webSocketManager), // Pass WebSocketManager to the SignUpPage
-        '/nav': (context) => BottomNavBarWidget(),
+        '/nav': (context) => BottomNavBarWidget(webSocketManager: webSocketManager), // Pass WebSocketManager to BottomNavBarWidget
       },
     );
   }

@@ -42,4 +42,14 @@ class WebSocketManager {
     _channel?.sink.close();
     _channel = null; // Reset the channel when it's closed
   }
+
+  void fetchOrderOptions() {
+    final request = {
+      'action': 'orderOptionRead',
+    };
+
+    final jsonData = jsonEncode(request);
+
+    sendMessage(jsonData);
+  }
 }
