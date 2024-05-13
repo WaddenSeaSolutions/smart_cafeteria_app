@@ -22,9 +22,9 @@ class _OrderScreenState extends State<OrderScreen> {
     widget.webSocketManager.fetchOrderOptions();
     _subscription = widget.webSocketManager.getMessages().listen((message) {
       final data = jsonDecode(message);
-      if (data['action'] == 'orderOptionRead') {
+      if (data['eventType'] == 'orderOptions') {
         setState(() {
-          orderOptions = data['data'];
+          orderOptions = data['orderOptions'];
         });
       }
     });
@@ -42,7 +42,7 @@ class _OrderScreenState extends State<OrderScreen> {
           final saladOption = orderOptions[index];
           if (saladOption['active']) {
             return ListTile(
-              title: Text(saladOption['optionname']),
+              title: Text(saladOption['optionName']),
               trailing: ElevatedButton(
                 onPressed: () {
                   // Handle order logic here
