@@ -38,7 +38,7 @@ void main() {
     });
 
     testWidgets('Navigation works correctly', (WidgetTester tester) async {
-      final MockWebSocketManager mockWebSocketManager = MockWebSocketManager();
+      final MockWebSocketManager mockWebSocketManager = MockWebSocketManager(); 
       await tester.pumpWidget(MaterialApp(
         home: BottomNavBarWidget(webSocketManager: mockWebSocketManager,),
       ));
