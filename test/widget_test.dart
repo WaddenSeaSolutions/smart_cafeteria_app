@@ -1,30 +1,46 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:smart_cafeteria_app/managers/websocket_manager.dart';
 import 'package:smart_cafeteria_app/pages/home.dart';
 import 'package:smart_cafeteria_app/pages/log_out_page.dart';
 import 'package:smart_cafeteria_app/pages/order_page.dart';
 import 'package:smart_cafeteria_app/widgets/BottomNavBar.dart';
+import 'package:mocktail/mocktail.dart';
+
+
+class MockWebSocketManager extends Mock implements WebSocketManager {
+}
+
 
 void main() {
   group('BottomNavBarWidget tests', () {
     testWidgets('Initial state is correct', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: BottomNavBarWidget(),
-      ));
+        var input = await File("test/orderOptions.json").readAsStringSync();
+        final MockWebSocketManager mockWebSocketManager = MockWebSocketManager();
+        when(() => mockWebSocketManager.fetchOrderOptions()).thenReturn(null);
+        when(() => mockWebSocketManager.getMessages()).thenAnswer((_) => Stream.value(input));
+        await tester.pumpWidget(MaterialApp(
+          home: BottomNavBarWidget(webSocketManager: mockWebSocketManager),
+        ));
 
-      // Check initial state
-      expect(find.byType(HomeScreen), findsOneWidget);
-      expect(find.byType(OrderScreen), findsNothing);
-      expect(find.byType(LogOutScreen), findsNothing);
+        // Check initial state
+        expect(find.byType(HomeScreen), findsOneWidget);
+        expect(find.byType(OrderScreen), findsNothing);
+        expect(find.byType(LogOutScreen), findsNothing);
 
-      // Check initial selected index
-      BottomNavigationBar bottomNavBar = tester.widget(find.byType(BottomNavigationBar));
-      expect(bottomNavBar.currentIndex, equals(0));
+        // Check initial selected index
+        BottomNavigationBar bottomNavBar = tester.widget(
+            find.byType(BottomNavigationBar));
+        expect(bottomNavBar.currentIndex, equals(0));
     });
 
     testWidgets('Navigation works correctly', (WidgetTester tester) async {
+      final MockWebSocketManager mockWebSocketManager = MockWebSocketManager();
       await tester.pumpWidget(MaterialApp(
-        home: BottomNavBarWidget(),
+        home: BottomNavBarWidget(webSocketManager: mockWebSocketManager,),
       ));
 
       // Tap the Order button
