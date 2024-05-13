@@ -16,12 +16,17 @@ class MockWebSocketManager extends Mock implements WebSocketManager {
 
 
 void main() {
+  late MockWebSocketManager mockWebSocketManager;
+
+  setUp(() {
+    var input = File("test/orderOptions.json").readAsStringSync();
+    mockWebSocketManager = MockWebSocketManager();
+    when(() => mockWebSocketManager.fetchOrderOptions()).thenReturn(null);
+    when(() => mockWebSocketManager.getMessages()).thenAnswer((_) => Stream.value(input));
+  });
+
   group('BottomNavBarWidget tests', () {
     testWidgets('Initial state is correct', (WidgetTester tester) async {
-        var input = await File("test/orderOptions.json").readAsStringSync();
-        final MockWebSocketManager mockWebSocketManager = MockWebSocketManager();
-        when(() => mockWebSocketManager.fetchOrderOptions()).thenReturn(null);
-        when(() => mockWebSocketManager.getMessages()).thenAnswer((_) => Stream.value(input));
         await tester.pumpWidget(MaterialApp(
           home: BottomNavBarWidget(webSocketManager: mockWebSocketManager),
         ));
@@ -38,7 +43,6 @@ void main() {
     });
 
     testWidgets('Navigation works correctly', (WidgetTester tester) async {
-      final MockWebSocketManager mockWebSocketManager = MockWebSocketManager();
       await tester.pumpWidget(MaterialApp(
         home: BottomNavBarWidget(webSocketManager: mockWebSocketManager,),
       ));
