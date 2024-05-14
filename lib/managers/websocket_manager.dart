@@ -17,6 +17,9 @@ class WebSocketManager {
   // WebSocketChannel instance
   WebSocketChannel? _channel;
 
+  // User ID
+  String? userid;
+
   // Method to connect to the WebSocket server
   void connect(String url) {
     // If the channel is already connected, return to avoid creating a new connection
@@ -51,5 +54,22 @@ class WebSocketManager {
     final jsonData = jsonEncode(request);
 
     sendMessage(jsonData);
+  }
+
+  void sendOrder(Map<String, dynamic> order) {
+    try {
+      // Remove the 'id' field from the order
+      order.remove('id');
+
+      // Convert the order to a JSON string
+      String orderJson = jsonEncode(order);
+
+      // Send the order JSON string over the WebSocket connection
+      _channel?.sink.add(orderJson);
+    } catch (e) {
+      print('An error occurred while sending the order: $e');
+      // Handle the exception here. You might want to show an error message to the user,
+      // log the error, or take some other action.
+    }
   }
 }
