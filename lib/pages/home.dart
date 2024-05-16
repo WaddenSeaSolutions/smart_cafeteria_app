@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> items = [
+    {'name': 'Pizza', 'price': '15kr', 'icon': Icons.fastfood},
+    {'name': 'Sandwich', 'price': '15kr', 'icon': Icons.local_cafe},
+    {'name': 'Pølsehorn', 'price': '10kr', 'icon': Icons.food_bank},
+    {'name': 'Vand', 'price': '10kr', 'icon': Icons.local_drink},
+    {'name': 'Wrap', 'price': '15kr', 'icon': Icons.local_cafe},
+    {'name': 'Mælk', 'price': '10kr', 'icon': Icons.local_drink},
+    {'name': 'Monster', 'price': '25kr', 'icon': Icons.local_cafe},
+    {'name': 'Redbull', 'price': '25kr', 'icon': Icons.local_cafe},
+    {'name': 'Kaffe', 'price': '10kr', 'icon': Icons.local_cafe},
+    {'name': 'Vandmelon', 'price': '100kr', 'icon': Icons.local_cafe},
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,38 +31,41 @@ class HomeScreen extends StatelessWidget {
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(10.0),
           ),
-          child: ListView(
-
-            children: [
-              _cafeteriaItem('· Pizza - 15kr', context),
-              _cafeteriaItem('· Sandwich - 15kr', context),
-              _cafeteriaItem('· Pølsehorn - 10kr', context),
-              _cafeteriaItem('· Vand - 10kr', context),
-              _cafeteriaItem('· Wrap - 15kr', context),
-              _cafeteriaItem('· Mælk - 10kr', context),
-              _cafeteriaItem('· Monster - 25kr', context),
-              _cafeteriaItem('· Redbull - 25kr', context),
-              _cafeteriaItem('· Kaffe - 10kr', context),
-              _cafeteriaItem('· Vandmelon - 100kr', context),
-
-              // Add more items as needed
-            ],
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 3 / 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+            itemCount: items.length,
+            itemBuilder: (ctx, i) => _cafeteriaItem(items[i], context),
           ),
         ),
       ),
     );
   }
 
-  Widget _cafeteriaItem(String itemName, BuildContext context) {
-    return ListTile(
-      title: Text(
-        itemName,
-        style: TextStyle(
-          fontSize: 20.0, // Set the font size to 18
-          // You can also adjust other text properties like fontWeight, color, etc. here
-        ),
+  Widget _cafeteriaItem(Map<String, dynamic> item, BuildContext context) {
+    return Card(
+      elevation: 5,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            item['icon'],
+            size: 50,
+          ),
+          Text(
+            item['name'],
+            style: TextStyle(fontSize: 16.0, color: Colors.black), // Set the text color to black
+          ),
+          Text(
+            item['price'],
+            style: TextStyle(fontSize: 14.0, color: Colors.black), // Set the text color to black
+          ),
+        ],
       ),
     );
   }
 }
-

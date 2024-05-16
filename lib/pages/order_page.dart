@@ -35,7 +35,8 @@ class _OrderScreenState extends State<OrderScreen> {
     });
   }
 
-  void confirmOrder() {
+  // In OrderScreen
+  void confirmOrder() async {
     // Gather all the orders from the orderCounts map where the count is greater than 0
     List<String> ordersToConfirm = orderCounts.entries
         .where((entry) => entry.value > 0)
@@ -45,7 +46,7 @@ class _OrderScreenState extends State<OrderScreen> {
     // For each order, create a new order object and send it to your database
     for (String order in ordersToConfirm) {
       var newOrder = {
-        'action': ' Your action here',
+        'action': 'orderCreateHandler',
         'timestamp': DateTime.now().toIso8601String(),
         'payment': false,
         'done': false,
@@ -53,33 +54,34 @@ class _OrderScreenState extends State<OrderScreen> {
         'order': order,
       };
 
-      // Send newOrder to your database
-      widget.webSocketManager.sendOrder(newOrder);
+      // Send newOrder to your database and wait for the order ID
+      String orderId = await widget.webSocketManager.sendOrder(newOrder);
+
+
+      // Reset orderCounts
+      setState(() {
+        orderCounts = Map.fromIterable(orderCounts.keys, key: (k) => k, value: (v) => 0);
+      });
+
+      // Show a pop-up message with the order ID
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Order Sent'),
+            content: Text('Your order has been sent to the kantine damer. Your order ID is $orderId.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
-
-    // Reset orderCounts
-    setState(() {
-      orderCounts = Map.fromIterable(orderCounts.keys, key: (k) => k, value: (v) => 0);
-    });
-
-    // Show a pop-up message
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Order Sent'),
-          content: Text('Your order has been sent to the kantine damer.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -97,13 +99,13 @@ class _OrderScreenState extends State<OrderScreen> {
               title: Text(saladOption['optionName']),
               leading: Text('${orderCounts[saladOption['optionName']]}x'), // Display order count
               trailing: ElevatedButton(
-                onPressed: orderCounts[saladOption['optionName']]! >= 1 // Disable button if order count is 1 or more
-                    ? null
-                    : () {
+                onPressed: (orderCounts[saladOption['optionName']] ?? 0) < 1 && orderCounts.values.where((count) => count > 0).length < 4
+                    ? () {
                   setState(() {
-                    orderCounts[saladOption['optionName']] = (orderCounts[saladOption['optionName']] ?? 0) + 1;                  });
-                  // Handle order logic here
-                },
+                    orderCounts[saladOption['optionName']] = (orderCounts[saladOption['optionName']] ?? 0) + 1;
+                  });
+                }
+                    : null,
                 child: Text('Order'),
               ),
             );
@@ -112,10 +114,25 @@ class _OrderScreenState extends State<OrderScreen> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: orderCounts.values.where((count) => count > 0).length >= 4 ? confirmOrder : null,
-        child: Icon(Icons.check),
-        tooltip: 'Confirm Order',
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: orderCounts.values.where((count) => count > 0).length >= 1 ? confirmOrder : null,
+            child: Icon(Icons.check),
+            tooltip: 'Confirm Order',
+          ),
+          SizedBox(width: 10), // Add some spacing between the buttons
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                orderCounts = Map.fromIterable(orderCounts.keys, key: (k) => k, value: (v) => 0);
+              });
+            },
+            child: Icon(Icons.cancel),
+            tooltip: 'Cancel Order',
+          ),
+        ],
       ),
     );
   }

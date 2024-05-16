@@ -56,7 +56,7 @@ class WebSocketManager {
     sendMessage(jsonData);
   }
 
-  void sendOrder(Map<String, dynamic> order) {
+  Future<String> sendOrder(Map<String, dynamic> order) async {
     try {
       // Remove the 'id' field from the order
       order.remove('id');
@@ -66,10 +66,19 @@ class WebSocketManager {
 
       // Send the order JSON string over the WebSocket connection
       _channel?.sink.add(orderJson);
+
+      // Wait for the response from the server
+      String response = await _broadcastStream.firstWhere((data) => jsonDecode(data)['action'] == 'orderCreateHandler');
+
+      // Extract the order ID from the response
+      String orderId = jsonDecode(response)['orderId'];
+
+      return orderId;
     } catch (e) {
       print('An error occurred while sending the order: $e');
       // Handle the exception here. You might want to show an error message to the user,
       // log the error, or take some other action.
+      throw e;
     }
   }
 }
