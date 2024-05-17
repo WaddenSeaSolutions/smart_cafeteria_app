@@ -47,15 +47,12 @@ class _OrderScreenState extends State<OrderScreen> {
     for (String order in ordersToConfirm) {
       var newOrder = {
         'action': 'orderCreateHandler',
-        'timestamp': DateTime.now().toIso8601String(),
-        'payment': false,
-        'done': false,
-        'userid': widget.webSocketManager.userid, // Use the userid from the WebSocketManager
         'order': order,
       };
 
       // Send newOrder to your database and wait for the order ID
       String orderId = await widget.webSocketManager.sendOrder(newOrder);
+      print('Order ID received: $orderId'); // Add this line
 
 
       // Reset orderCounts
@@ -67,6 +64,8 @@ class _OrderScreenState extends State<OrderScreen> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
+          print('Showing dialog'); // Add this line
+
           return AlertDialog(
             title: Text('Order Sent'),
             content: Text('Your order has been sent to the kantine damer. Your order ID is $orderId.'),

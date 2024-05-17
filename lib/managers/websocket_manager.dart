@@ -28,6 +28,8 @@ class WebSocketManager {
     }
     _channel = IOWebSocketChannel.connect(url);
     _broadcastStream = _channel!.stream.asBroadcastStream();
+    print('WebSocket connected to $url'); // Add this line
+
   }
 
   // Method to send a message through the WebSocket
@@ -66,9 +68,12 @@ class WebSocketManager {
 
       // Send the order JSON string over the WebSocket connection
       _channel?.sink.add(orderJson);
+      print('Order sent: $orderJson'); // Add this line
+
 
       // Wait for the response from the server
       String response = await _broadcastStream.firstWhere((data) => jsonDecode(data)['action'] == 'orderCreateHandler');
+      print('Response received: $response'); // Add this line
 
       // Extract the order ID from the response
       String orderId = jsonDecode(response)['orderId'];
