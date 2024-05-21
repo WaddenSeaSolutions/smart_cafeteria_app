@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria_app/managers/events.dart';
+import 'package:smart_cafeteria_app/managers/models.dart';
 import 'package:smart_cafeteria_app/managers/websocket_manager.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -37,6 +39,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   // In OrderScreen
   void confirmOrder() async {
+    /*
     // Gather all the orders from the orderCounts map where the count is greater than 0
     List<String> ordersToConfirm = orderCounts.entries
         .where((entry) => entry.value > 0)
@@ -44,43 +47,49 @@ class _OrderScreenState extends State<OrderScreen> {
         .toList();
 
     // For each order, create a new order object and send it to your database
-    for (String order in ordersToConfirm) {
       var newOrder = {
         'action': 'orderCreateHandler',
-        'order': order,
+        'order': ordersToConfirm,
       };
+     */
+    final action = OrderCreateAction(
+      order: orderCounts.entries
+          .map((entry) =>
+              OrderOption(optionName: entry.key, active: true, deleted: false))
+          .toList(),
+    );
 
-      // Send newOrder to your database and wait for the order ID
-      String orderId = await widget.webSocketManager.sendOrder(newOrder);
-      print('Order ID received: $orderId'); // Add this line
+    // Send newOrder to your database and wait for the order ID
+    String orderId = await widget.webSocketManager.sendOrder(action);
+    print('Order ID received: $orderId');
 
+    // Reset orderCounts
+    setState(() {
+      orderCounts =
+          Map.fromIterable(orderCounts.keys, key: (k) => k, value: (v) => 0);
+    });
 
-      // Reset orderCounts
-      setState(() {
-        orderCounts = Map.fromIterable(orderCounts.keys, key: (k) => k, value: (v) => 0);
-      });
+    // Show a pop-up message with the order ID
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        print('Showing dialog');
 
-      // Show a pop-up message with the order ID
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          print('Showing dialog'); // Add this line
-
-          return AlertDialog(
-            title: Text('Order Sent'),
-            content: Text('Your order has been sent to the kantine damer. Your order ID is $orderId.'),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
+        return AlertDialog(
+          title: Text('Order Sent'),
+          content: Text(
+              'Your order has been sent to the kantine damer. Your order ID is $orderId.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -96,14 +105,18 @@ class _OrderScreenState extends State<OrderScreen> {
           if (saladOption['active']) {
             return ListTile(
               title: Text(saladOption['optionName']),
-              leading: Text('${orderCounts[saladOption['optionName']]}x'), // Display order count
+              leading: Text('${orderCounts[saladOption['optionName']]}x'),
+              // Display order count
               trailing: ElevatedButton(
-                onPressed: (orderCounts[saladOption['optionName']] ?? 0) < 1 && orderCounts.values.where((count) => count > 0).length < 4
+                onPressed: (orderCounts[saladOption['optionName']] ?? 0) < 1 &&
+                        orderCounts.values.where((count) => count > 0).length <
+                            4
                     ? () {
-                  setState(() {
-                    orderCounts[saladOption['optionName']] = (orderCounts[saladOption['optionName']] ?? 0) + 1;
-                  });
-                }
+                        setState(() {
+                          orderCounts[saladOption['optionName']] =
+                              (orderCounts[saladOption['optionName']] ?? 0) + 1;
+                        });
+                      }
                     : null,
                 child: Text('Order'),
               ),
@@ -117,7 +130,10 @@ class _OrderScreenState extends State<OrderScreen> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: orderCounts.values.where((count) => count > 0).length >= 1 ? confirmOrder : null,
+            onPressed:
+                orderCounts.values.where((count) => count > 0).length >= 1
+                    ? confirmOrder
+                    : null,
             child: Icon(Icons.check),
             tooltip: 'Confirm Order',
           ),
@@ -125,7 +141,8 @@ class _OrderScreenState extends State<OrderScreen> {
           FloatingActionButton(
             onPressed: () {
               setState(() {
-                orderCounts = Map.fromIterable(orderCounts.keys, key: (k) => k, value: (v) => 0);
+                orderCounts = Map.fromIterable(orderCounts.keys,
+                    key: (k) => k, value: (v) => 0);
               });
             },
             child: Icon(Icons.cancel),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:smart_cafeteria_app/managers/events.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -58,13 +59,13 @@ class WebSocketManager {
     sendMessage(jsonData);
   }
 
-  Future<String> sendOrder(Map<String, dynamic> order) async {
+  Future<String> sendOrder(OrderCreateAction action) async {
     try {
       // Remove the 'id' field from the order
-      order.remove('id');
+      //order.remove('id');
 
       // Convert the order to a JSON string
-      String orderJson = jsonEncode(order);
+      String orderJson = jsonEncode(action);
 
       // Send the order JSON string over the WebSocket connection
       _channel?.sink.add(orderJson);
