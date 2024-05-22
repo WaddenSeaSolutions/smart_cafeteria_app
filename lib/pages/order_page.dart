@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria_app/managers/events.dart';
 import 'package:smart_cafeteria_app/managers/models.dart';
 import 'package:smart_cafeteria_app/managers/websocket_manager.dart';
+
+const NumberOfPossibleSaledSelections = 4;
 
 class OrderScreen extends StatefulWidget {
   final WebSocketManager webSocketManager;
@@ -74,7 +77,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   selectOption(OrderOption saladOption) {
     setState(() {
-      if (selections.length < 4) {
+      if (selections.length < NumberOfPossibleSaledSelections) {
         selections.add(saladOption.id);
       }
     });
@@ -86,27 +89,34 @@ class _OrderScreenState extends State<OrderScreen> {
       appBar: AppBar(
         title: Text('OrderScreen'),
       ),
-      body: ListView.builder(
-        itemCount: orderOptions.length,
-        itemBuilder: (context, index) {
-          final saladOption = orderOptions[index];
-          if (saladOption.active) {
-            return ListTile(
-              title: Text(saladOption.optionName),
-              leading: Text(selections.contains(saladOption.id) ? "1x" : '0x'),
-              // Display order count
-              trailing: ElevatedButton(
-                onPressed: selections.contains(saladOption.id) ||
-                        selections.length >= 4
-                    ? null
-                    : () => selectOption(saladOption),
-                child: Text('Order'),
-              ),
-            );
-          } else {
-            return SizedBox.shrink(); // Don't display inactive salads
-          }
-        },
+      body: Column(
+        children: [
+          Text("Du har ${NumberOfPossibleSaledSelections - selections.length} valg mulighed tilbage",),
+           Expanded(
+            child: ListView.builder(
+              itemCount: orderOptions.length,
+              itemBuilder: (context, index) {
+                final saladOption = orderOptions[index];
+                if (saladOption.active) {
+                  return ListTile(
+                    title: Text(saladOption.optionName),
+                    leading: Text(selections.contains(saladOption.id) ? "1x" : '0x'),
+                    // Display order count
+                    trailing: ElevatedButton(
+                      onPressed: selections.contains(saladOption.id) ||
+                              selections.length >= NumberOfPossibleSaledSelections
+                          ? null
+                          : () => selectOption(saladOption),
+                      child: Text('Order'),
+                    ),
+                  );
+                } else {
+                  return SizedBox.shrink(); // Don't display inactive salads
+                }
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -120,8 +130,7 @@ class _OrderScreenState extends State<OrderScreen> {
           FloatingActionButton(
             onPressed: () {
               setState(() {
-                orderCounts = Map.fromIterable(orderCounts.keys,
-                    key: (k) => k, value: (v) => 0);
+                selections.clear();
               });
             },
             child: Icon(Icons.cancel),
