@@ -1,7 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria_app/managers/events.dart';
+import 'package:smart_cafeteria_app/managers/models.dart';
 import 'package:smart_cafeteria_app/managers/websocket_manager.dart';
+
+const NumberOfPossibleSaledSelections = 4;
 
 class OrderScreen extends StatefulWidget {
   final WebSocketManager webSocketManager;
@@ -14,7 +19,8 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   late StreamSubscription<String> _subscription;
-  List<dynamic> orderOptions = [];
+  List<OrderOption> orderOptions = [];
+  Set<int> selections = {};
   Map<String, int> orderCounts = {}; // Map to keep track of order counts
 
   @override
@@ -24,51 +30,38 @@ class _OrderScreenState extends State<OrderScreen> {
     _subscription = widget.webSocketManager.getMessages().listen((message) {
       final data = jsonDecode(message);
       if (data['eventType'] == 'orderOptions') {
+        final event = OrderOptionsEvent.fromJson(data);
         setState(() {
-          orderOptions = data['orderOptions'];
-          // Initialize orderCounts for each order option
-          orderOptions.forEach((option) {
-            orderCounts[option['optionName']] = 0;
-          });
+          orderOptions = event.orderOptions;
         });
       }
     });
   }
 
-  void confirmOrder() {
-    // Gather all the orders from the orderCounts map where the count is greater than 0
-    List<String> ordersToConfirm = orderCounts.entries
-        .where((entry) => entry.value > 0)
-        .map((entry) => entry.key)
-        .toList();
+  // In OrderScreen
+  void confirmOrder() async {
+    final action = OrderCreateAction(OrderOptionId: selections.toList());
 
-    // For each order, create a new order object and send it to your database
-    for (String order in ordersToConfirm) {
-      var newOrder = {
-        'action': ' Your action here',
-        'timestamp': DateTime.now().toIso8601String(),
-        'payment': false,
-        'done': false,
-        'userid': widget.webSocketManager.userid, // Use the userid from the WebSocketManager
-        'order': order,
-      };
-
-      // Send newOrder to your database
-      widget.webSocketManager.sendOrder(newOrder);
-    }
+    // Send newOrder to your database and wait for the order ID
+    String orderId = await widget.webSocketManager.sendOrder(action);
+    print('Order ID received: $orderId');
 
     // Reset orderCounts
     setState(() {
-      orderCounts = Map.fromIterable(orderCounts.keys, key: (k) => k, value: (v) => 0);
+      orderCounts =
+          Map.fromIterable(orderCounts.keys, key: (k) => k, value: (v) => 0);
     });
 
-    // Show a pop-up message
+    // Show a pop-up message with the order ID
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        print('Showing dialog');
+
         return AlertDialog(
           title: Text('Order Sent'),
-          content: Text('Your order has been sent to the kantine damer.'),
+          content: Text(
+              'Your order has been sent to the kantine damer. Your order ID is $orderId.'),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),
@@ -82,40 +75,68 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
+  selectOption(OrderOption saladOption) {
+    setState(() {
+      if (selections.length < NumberOfPossibleSaledSelections) {
+        selections.add(saladOption.id);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('OrderScreen'),
       ),
-      body: ListView.builder(
-        itemCount: orderOptions.length,
-        itemBuilder: (context, index) {
-          final saladOption = orderOptions[index];
-          if (saladOption['active']) {
-            return ListTile(
-              title: Text(saladOption['optionName']),
-              leading: Text('${orderCounts[saladOption['optionName']]}x'), // Display order count
-              trailing: ElevatedButton(
-                onPressed: orderCounts[saladOption['optionName']]! >= 1 // Disable button if order count is 1 or more
-                    ? null
-                    : () {
-                  setState(() {
-                    orderCounts[saladOption['optionName']] = (orderCounts[saladOption['optionName']] ?? 0) + 1;                  });
-                  // Handle order logic here
-                },
-                child: Text('Order'),
-              ),
-            );
-          } else {
-            return SizedBox.shrink(); // Don't display inactive salads
-          }
-        },
+      body: Column(
+        children: [
+          Text("Du har ${NumberOfPossibleSaledSelections - selections.length} valg mulighed tilbage",),
+           Expanded(
+            child: ListView.builder(
+              itemCount: orderOptions.length,
+              itemBuilder: (context, index) {
+                final saladOption = orderOptions[index];
+                if (saladOption.active) {
+                  return ListTile(
+                    title: Text(saladOption.optionName),
+                    leading: Text(selections.contains(saladOption.id) ? "1x" : '0x'),
+                    // Display order count
+                    trailing: ElevatedButton(
+                      onPressed: selections.contains(saladOption.id) ||
+                              selections.length >= NumberOfPossibleSaledSelections
+                          ? null
+                          : () => selectOption(saladOption),
+                      child: Text('Order'),
+                    ),
+                  );
+                } else {
+                  return SizedBox.shrink(); // Don't display inactive salads
+                }
+              },
+            ),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: orderCounts.values.where((count) => count > 0).length >= 4 ? confirmOrder : null,
-        child: Icon(Icons.check),
-        tooltip: 'Confirm Order',
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: selections.isNotEmpty ? confirmOrder : null,
+            child: Icon(Icons.check),
+            tooltip: 'Confirm Order',
+          ),
+          SizedBox(width: 10), // Add some spacing between the buttons
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                selections.clear();
+              });
+            },
+            child: Icon(Icons.cancel),
+            tooltip: 'Cancel Order',
+          ),
+        ],
       ),
     );
   }

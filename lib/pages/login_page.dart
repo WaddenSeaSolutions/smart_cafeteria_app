@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria_app/managers/JWTTokenStorage.dart';
+import 'package:smart_cafeteria_app/managers/events.dart';
 import 'package:smart_cafeteria_app/pages/sign_up_page.dart';
 import '../animation/scale_route.dart';
 import '../managers/websocket_manager.dart';
@@ -46,7 +47,7 @@ class _LoginFormState extends State<LoginForm> {
   final _passwordController = TextEditingController(text: "11521152");
   String? _jwtToken;
 
-  late StreamSubscription<String> _subscription;
+  late StreamSubscription _subscription;
 
   @override
   void initState() {
@@ -55,10 +56,18 @@ class _LoginFormState extends State<LoginForm> {
     Stream<String> broadcastStream = widget.webSocketManager.getMessages();
 
     // Listen for incoming messages (e.g. the JWT token)
-    _subscription = broadcastStream.listen((message) {
+    _subscription = broadcastStream
+    .map((message) => jsonDecode(message) as Map<String, dynamic>)
+    .where((message) {
+      return message['eventType'] == 'successfulLogin';
+    })
+        .listen((message) {
       setState(() {
         // Store the JWT token or perform any other actions
-        _jwtToken = message;
+        _jwtToken = message['token'];
+
+        widget.webSocketManager.sendMessage(jsonEncode(AuthenticationAction(token: _jwtToken!).toJson()));
+
         // Perform additional actions with the JWT token (e.g., navigate to another page, show a message)
         if (_jwtToken != null && _jwtToken!.isNotEmpty) {
           widget.jwtTokenStorage.storeJWTToken(_jwtToken!);
