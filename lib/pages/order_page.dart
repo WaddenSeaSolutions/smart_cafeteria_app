@@ -16,7 +16,8 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   late StreamSubscription<String> _subscription;
-  List<dynamic> orderOptions = [];
+  List<OrderOption> orderOptions = [];
+  Set<int> selections = {};
   Map<String, int> orderCounts = {}; // Map to keep track of order counts
 
   @override
@@ -26,12 +27,9 @@ class _OrderScreenState extends State<OrderScreen> {
     _subscription = widget.webSocketManager.getMessages().listen((message) {
       final data = jsonDecode(message);
       if (data['eventType'] == 'orderOptions') {
+        final event = OrderOptionsEvent.fromJson(data);
         setState(() {
-          orderOptions = data['orderOptions'];
-          // Initialize orderCounts for each order option
-          orderOptions.forEach((option) {
-            orderCounts[option['optionName']] = 0;
-          });
+          orderOptions = event.orderOptions;
         });
       }
     });
@@ -39,25 +37,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   // In OrderScreen
   void confirmOrder() async {
-    /*
-    // Gather all the orders from the orderCounts map where the count is greater than 0
-    List<String> ordersToConfirm = orderCounts.entries
-        .where((entry) => entry.value > 0)
-        .map((entry) => entry.key)
-        .toList();
-
-    // For each order, create a new order object and send it to your database
-      var newOrder = {
-        'action': 'orderCreateHandler',
-        'order': ordersToConfirm,
-      };
-     */
-    final action = OrderCreateAction(
-      order: orderCounts.entries
-          .map((entry) =>
-              OrderOption(optionName: entry.key, active: true, deleted: false))
-          .toList(),
-    );
+    final action = OrderCreateAction(OrderOptionId: selections.toList());
 
     // Send newOrder to your database and wait for the order ID
     String orderId = await widget.webSocketManager.sendOrder(action);
@@ -92,6 +72,14 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
+  selectOption(OrderOption saladOption) {
+    setState(() {
+      if (selections.length < 4) {
+        selections.add(saladOption.id);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,22 +90,16 @@ class _OrderScreenState extends State<OrderScreen> {
         itemCount: orderOptions.length,
         itemBuilder: (context, index) {
           final saladOption = orderOptions[index];
-          if (saladOption['active']) {
+          if (saladOption.active) {
             return ListTile(
-              title: Text(saladOption['optionName']),
-              leading: Text('${orderCounts[saladOption['optionName']]}x'),
+              title: Text(saladOption.optionName),
+              leading: Text(selections.contains(saladOption.id) ? "1x" : '0x'),
               // Display order count
               trailing: ElevatedButton(
-                onPressed: (orderCounts[saladOption['optionName']] ?? 0) < 1 &&
-                        orderCounts.values.where((count) => count > 0).length <
-                            4
-                    ? () {
-                        setState(() {
-                          orderCounts[saladOption['optionName']] =
-                              (orderCounts[saladOption['optionName']] ?? 0) + 1;
-                        });
-                      }
-                    : null,
+                onPressed: selections.contains(saladOption.id) ||
+                        selections.length >= 4
+                    ? null
+                    : () => selectOption(saladOption),
                 child: Text('Order'),
               ),
             );
@@ -130,10 +112,7 @@ class _OrderScreenState extends State<OrderScreen> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed:
-                orderCounts.values.where((count) => count > 0).length >= 1
-                    ? confirmOrder
-                    : null,
+            onPressed: selections.isNotEmpty ? confirmOrder : null,
             child: Icon(Icons.check),
             tooltip: 'Confirm Order',
           ),

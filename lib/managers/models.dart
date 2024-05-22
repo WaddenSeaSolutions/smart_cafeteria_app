@@ -7,6 +7,7 @@ part 'models.g.dart';
 class OrderOption with _$OrderOption{
   const factory OrderOption({
     required String optionName,
+    required int id,
     required bool active,
     required bool deleted,
   }) = _OrderOption;

@@ -24,8 +24,8 @@ _$OrderCreateActionImpl _$$OrderCreateActionImplFromJson(
         Map<String, dynamic> json) =>
     _$OrderCreateActionImpl(
       action: json['action'] as String? ?? OrderCreateAction.name,
-      order: (json['order'] as List<dynamic>)
-          .map((e) => OrderOption.fromJson(e as Map<String, dynamic>))
+      OrderOptionId: (json['OrderOptionId'] as List<dynamic>)
+          .map((e) => (e as num).toInt())
           .toList(),
     );
 
@@ -33,5 +33,21 @@ Map<String, dynamic> _$$OrderCreateActionImplToJson(
         _$OrderCreateActionImpl instance) =>
     <String, dynamic>{
       'action': instance.action,
-      'order': instance.order,
+      'OrderOptionId': instance.OrderOptionId,
+    };
+
+_$OrderOptionsEventImpl _$$OrderOptionsEventImplFromJson(
+        Map<String, dynamic> json) =>
+    _$OrderOptionsEventImpl(
+      action: json['action'] as String? ?? OrderOptionsEvent.name,
+      orderOptions: (json['orderOptions'] as List<dynamic>)
+          .map((e) => OrderOption.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$OrderOptionsEventImplToJson(
+        _$OrderOptionsEventImpl instance) =>
+    <String, dynamic>{
+      'action': instance.action,
+      'orderOptions': instance.orderOptions,
     };

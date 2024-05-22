@@ -32,10 +32,28 @@ class OrderCreateAction extends ClientEvent
 
   const factory OrderCreateAction({
     @Default(OrderCreateAction.name) String action,
-    required List<OrderOption> order,
+    required List<int> OrderOptionId,
   }) = _OrderCreateAction;
 
   factory OrderCreateAction.fromJson(
       Map<String, Object?> json) =>
       _$OrderCreateActionFromJson(json);
+}
+
+abstract class ServerEvent extends BaseEvent {
+}
+
+@freezed
+class OrderOptionsEvent extends ServerEvent
+    with _$OrderOptionsEvent {
+  static const String name = "orderOptions";
+
+  const factory OrderOptionsEvent({
+    @Default(OrderOptionsEvent.name) String action,
+    required List<OrderOption> orderOptions,
+  }) = _OrderOptionsEvent;
+
+  factory OrderOptionsEvent.fromJson(
+      Map<String, Object?> json) =>
+      _$OrderOptionsEventFromJson(json);
 }

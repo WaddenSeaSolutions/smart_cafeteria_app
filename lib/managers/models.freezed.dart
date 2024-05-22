@@ -21,6 +21,7 @@ OrderOption _$OrderOptionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$OrderOption {
   String get optionName => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   bool get active => throw _privateConstructorUsedError;
   bool get deleted => throw _privateConstructorUsedError;
 
@@ -36,7 +37,7 @@ abstract class $OrderOptionCopyWith<$Res> {
           OrderOption value, $Res Function(OrderOption) then) =
       _$OrderOptionCopyWithImpl<$Res, OrderOption>;
   @useResult
-  $Res call({String optionName, bool active, bool deleted});
+  $Res call({String optionName, int id, bool active, bool deleted});
 }
 
 /// @nodoc
@@ -53,6 +54,7 @@ class _$OrderOptionCopyWithImpl<$Res, $Val extends OrderOption>
   @override
   $Res call({
     Object? optionName = null,
+    Object? id = null,
     Object? active = null,
     Object? deleted = null,
   }) {
@@ -61,6 +63,10 @@ class _$OrderOptionCopyWithImpl<$Res, $Val extends OrderOption>
           ? _value.optionName
           : optionName // ignore: cast_nullable_to_non_nullable
               as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       active: null == active
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
@@ -81,7 +87,7 @@ abstract class _$$OrderOptionImplCopyWith<$Res>
       __$$OrderOptionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String optionName, bool active, bool deleted});
+  $Res call({String optionName, int id, bool active, bool deleted});
 }
 
 /// @nodoc
@@ -96,6 +102,7 @@ class __$$OrderOptionImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? optionName = null,
+    Object? id = null,
     Object? active = null,
     Object? deleted = null,
   }) {
@@ -104,6 +111,10 @@ class __$$OrderOptionImplCopyWithImpl<$Res>
           ? _value.optionName
           : optionName // ignore: cast_nullable_to_non_nullable
               as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       active: null == active
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
@@ -120,7 +131,10 @@ class __$$OrderOptionImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$OrderOptionImpl implements _OrderOption {
   const _$OrderOptionImpl(
-      {required this.optionName, required this.active, required this.deleted});
+      {required this.optionName,
+      required this.id,
+      required this.active,
+      required this.deleted});
 
   factory _$OrderOptionImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderOptionImplFromJson(json);
@@ -128,13 +142,15 @@ class _$OrderOptionImpl implements _OrderOption {
   @override
   final String optionName;
   @override
+  final int id;
+  @override
   final bool active;
   @override
   final bool deleted;
 
   @override
   String toString() {
-    return 'OrderOption(optionName: $optionName, active: $active, deleted: $deleted)';
+    return 'OrderOption(optionName: $optionName, id: $id, active: $active, deleted: $deleted)';
   }
 
   @override
@@ -144,13 +160,14 @@ class _$OrderOptionImpl implements _OrderOption {
             other is _$OrderOptionImpl &&
             (identical(other.optionName, optionName) ||
                 other.optionName == optionName) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.active, active) || other.active == active) &&
             (identical(other.deleted, deleted) || other.deleted == deleted));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, optionName, active, deleted);
+  int get hashCode => Object.hash(runtimeType, optionName, id, active, deleted);
 
   @JsonKey(ignore: true)
   @override
@@ -169,6 +186,7 @@ class _$OrderOptionImpl implements _OrderOption {
 abstract class _OrderOption implements OrderOption {
   const factory _OrderOption(
       {required final String optionName,
+      required final int id,
       required final bool active,
       required final bool deleted}) = _$OrderOptionImpl;
 
@@ -177,6 +195,8 @@ abstract class _OrderOption implements OrderOption {
 
   @override
   String get optionName;
+  @override
+  int get id;
   @override
   bool get active;
   @override

@@ -180,7 +180,7 @@ OrderCreateAction _$OrderCreateActionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$OrderCreateAction {
   String get action => throw _privateConstructorUsedError;
-  List<OrderOption> get order => throw _privateConstructorUsedError;
+  List<int> get OrderOptionId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -194,7 +194,7 @@ abstract class $OrderCreateActionCopyWith<$Res> {
           OrderCreateAction value, $Res Function(OrderCreateAction) then) =
       _$OrderCreateActionCopyWithImpl<$Res, OrderCreateAction>;
   @useResult
-  $Res call({String action, List<OrderOption> order});
+  $Res call({String action, List<int> OrderOptionId});
 }
 
 /// @nodoc
@@ -211,17 +211,17 @@ class _$OrderCreateActionCopyWithImpl<$Res, $Val extends OrderCreateAction>
   @override
   $Res call({
     Object? action = null,
-    Object? order = null,
+    Object? OrderOptionId = null,
   }) {
     return _then(_value.copyWith(
       action: null == action
           ? _value.action
           : action // ignore: cast_nullable_to_non_nullable
               as String,
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as List<OrderOption>,
+      OrderOptionId: null == OrderOptionId
+          ? _value.OrderOptionId
+          : OrderOptionId // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ) as $Val);
   }
 }
@@ -234,7 +234,7 @@ abstract class _$$OrderCreateActionImplCopyWith<$Res>
       __$$OrderCreateActionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String action, List<OrderOption> order});
+  $Res call({String action, List<int> OrderOptionId});
 }
 
 /// @nodoc
@@ -249,17 +249,17 @@ class __$$OrderCreateActionImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? action = null,
-    Object? order = null,
+    Object? OrderOptionId = null,
   }) {
     return _then(_$OrderCreateActionImpl(
       action: null == action
           ? _value.action
           : action // ignore: cast_nullable_to_non_nullable
               as String,
-      order: null == order
-          ? _value._order
-          : order // ignore: cast_nullable_to_non_nullable
-              as List<OrderOption>,
+      OrderOptionId: null == OrderOptionId
+          ? _value._OrderOptionId
+          : OrderOptionId // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ));
   }
 }
@@ -269,8 +269,8 @@ class __$$OrderCreateActionImplCopyWithImpl<$Res>
 class _$OrderCreateActionImpl implements _OrderCreateAction {
   const _$OrderCreateActionImpl(
       {this.action = OrderCreateAction.name,
-      required final List<OrderOption> order})
-      : _order = order;
+      required final List<int> OrderOptionId})
+      : _OrderOptionId = OrderOptionId;
 
   factory _$OrderCreateActionImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderCreateActionImplFromJson(json);
@@ -278,17 +278,17 @@ class _$OrderCreateActionImpl implements _OrderCreateAction {
   @override
   @JsonKey()
   final String action;
-  final List<OrderOption> _order;
+  final List<int> _OrderOptionId;
   @override
-  List<OrderOption> get order {
-    if (_order is EqualUnmodifiableListView) return _order;
+  List<int> get OrderOptionId {
+    if (_OrderOptionId is EqualUnmodifiableListView) return _OrderOptionId;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_order);
+    return EqualUnmodifiableListView(_OrderOptionId);
   }
 
   @override
   String toString() {
-    return 'OrderCreateAction(action: $action, order: $order)';
+    return 'OrderCreateAction(action: $action, OrderOptionId: $OrderOptionId)';
   }
 
   @override
@@ -297,13 +297,14 @@ class _$OrderCreateActionImpl implements _OrderCreateAction {
         (other.runtimeType == runtimeType &&
             other is _$OrderCreateActionImpl &&
             (identical(other.action, action) || other.action == action) &&
-            const DeepCollectionEquality().equals(other._order, _order));
+            const DeepCollectionEquality()
+                .equals(other._OrderOptionId, _OrderOptionId));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, action, const DeepCollectionEquality().hash(_order));
+      runtimeType, action, const DeepCollectionEquality().hash(_OrderOptionId));
 
   @JsonKey(ignore: true)
   @override
@@ -323,7 +324,7 @@ class _$OrderCreateActionImpl implements _OrderCreateAction {
 abstract class _OrderCreateAction implements OrderCreateAction {
   const factory _OrderCreateAction(
       {final String action,
-      required final List<OrderOption> order}) = _$OrderCreateActionImpl;
+      required final List<int> OrderOptionId}) = _$OrderCreateActionImpl;
 
   factory _OrderCreateAction.fromJson(Map<String, dynamic> json) =
       _$OrderCreateActionImpl.fromJson;
@@ -331,9 +332,175 @@ abstract class _OrderCreateAction implements OrderCreateAction {
   @override
   String get action;
   @override
-  List<OrderOption> get order;
+  List<int> get OrderOptionId;
   @override
   @JsonKey(ignore: true)
   _$$OrderCreateActionImplCopyWith<_$OrderCreateActionImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+OrderOptionsEvent _$OrderOptionsEventFromJson(Map<String, dynamic> json) {
+  return _OrderOptionsEvent.fromJson(json);
+}
+
+/// @nodoc
+mixin _$OrderOptionsEvent {
+  String get action => throw _privateConstructorUsedError;
+  List<OrderOption> get orderOptions => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $OrderOptionsEventCopyWith<OrderOptionsEvent> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $OrderOptionsEventCopyWith<$Res> {
+  factory $OrderOptionsEventCopyWith(
+          OrderOptionsEvent value, $Res Function(OrderOptionsEvent) then) =
+      _$OrderOptionsEventCopyWithImpl<$Res, OrderOptionsEvent>;
+  @useResult
+  $Res call({String action, List<OrderOption> orderOptions});
+}
+
+/// @nodoc
+class _$OrderOptionsEventCopyWithImpl<$Res, $Val extends OrderOptionsEvent>
+    implements $OrderOptionsEventCopyWith<$Res> {
+  _$OrderOptionsEventCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? action = null,
+    Object? orderOptions = null,
+  }) {
+    return _then(_value.copyWith(
+      action: null == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as String,
+      orderOptions: null == orderOptions
+          ? _value.orderOptions
+          : orderOptions // ignore: cast_nullable_to_non_nullable
+              as List<OrderOption>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$OrderOptionsEventImplCopyWith<$Res>
+    implements $OrderOptionsEventCopyWith<$Res> {
+  factory _$$OrderOptionsEventImplCopyWith(_$OrderOptionsEventImpl value,
+          $Res Function(_$OrderOptionsEventImpl) then) =
+      __$$OrderOptionsEventImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String action, List<OrderOption> orderOptions});
+}
+
+/// @nodoc
+class __$$OrderOptionsEventImplCopyWithImpl<$Res>
+    extends _$OrderOptionsEventCopyWithImpl<$Res, _$OrderOptionsEventImpl>
+    implements _$$OrderOptionsEventImplCopyWith<$Res> {
+  __$$OrderOptionsEventImplCopyWithImpl(_$OrderOptionsEventImpl _value,
+      $Res Function(_$OrderOptionsEventImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? action = null,
+    Object? orderOptions = null,
+  }) {
+    return _then(_$OrderOptionsEventImpl(
+      action: null == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as String,
+      orderOptions: null == orderOptions
+          ? _value._orderOptions
+          : orderOptions // ignore: cast_nullable_to_non_nullable
+              as List<OrderOption>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$OrderOptionsEventImpl implements _OrderOptionsEvent {
+  const _$OrderOptionsEventImpl(
+      {this.action = OrderOptionsEvent.name,
+      required final List<OrderOption> orderOptions})
+      : _orderOptions = orderOptions;
+
+  factory _$OrderOptionsEventImpl.fromJson(Map<String, dynamic> json) =>
+      _$$OrderOptionsEventImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final String action;
+  final List<OrderOption> _orderOptions;
+  @override
+  List<OrderOption> get orderOptions {
+    if (_orderOptions is EqualUnmodifiableListView) return _orderOptions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_orderOptions);
+  }
+
+  @override
+  String toString() {
+    return 'OrderOptionsEvent(action: $action, orderOptions: $orderOptions)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OrderOptionsEventImpl &&
+            (identical(other.action, action) || other.action == action) &&
+            const DeepCollectionEquality()
+                .equals(other._orderOptions, _orderOptions));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, action, const DeepCollectionEquality().hash(_orderOptions));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OrderOptionsEventImplCopyWith<_$OrderOptionsEventImpl> get copyWith =>
+      __$$OrderOptionsEventImplCopyWithImpl<_$OrderOptionsEventImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$OrderOptionsEventImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _OrderOptionsEvent implements OrderOptionsEvent {
+  const factory _OrderOptionsEvent(
+      {final String action,
+      required final List<OrderOption> orderOptions}) = _$OrderOptionsEventImpl;
+
+  factory _OrderOptionsEvent.fromJson(Map<String, dynamic> json) =
+      _$OrderOptionsEventImpl.fromJson;
+
+  @override
+  String get action;
+  @override
+  List<OrderOption> get orderOptions;
+  @override
+  @JsonKey(ignore: true)
+  _$$OrderOptionsEventImplCopyWith<_$OrderOptionsEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

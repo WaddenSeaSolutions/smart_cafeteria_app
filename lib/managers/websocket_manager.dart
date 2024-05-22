@@ -61,8 +61,6 @@ class WebSocketManager {
 
   Future<String> sendOrder(OrderCreateAction action) async {
     try {
-      // Remove the 'id' field from the order
-      //order.remove('id');
 
       // Convert the order to a JSON string
       String orderJson = jsonEncode(action);
