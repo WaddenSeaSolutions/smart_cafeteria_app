@@ -43,7 +43,7 @@ class _OrderScreenState extends State<OrderScreen> {
     final action = OrderCreateAction(OrderOptionId: selections.toList());
 
     // Send newOrder to your database and wait for the order ID
-    String orderId = await widget.webSocketManager.sendOrder(action);
+    int orderId = await widget.webSocketManager.sendOrder(action);
     print('Order ID received: $orderId');
 
     // Reset orderCounts

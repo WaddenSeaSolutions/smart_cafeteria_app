@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:smart_cafeteria_app/managers/events.dart';
-import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketManager {
@@ -27,10 +26,9 @@ class WebSocketManager {
     if (_channel != null) {
       return;
     }
-    _channel = IOWebSocketChannel.connect(url);
+    _channel = WebSocketChannel.connect(Uri.parse(url));
     _broadcastStream = _channel!.stream.asBroadcastStream();
     print('WebSocket connected to $url'); // Add this line
-
   }
 
   // Method to send a message through the WebSocket
@@ -59,30 +57,21 @@ class WebSocketManager {
     sendMessage(jsonData);
   }
 
-  Future<String> sendOrder(OrderCreateAction action) async {
-    try {
+  Future<int> sendOrder(OrderCreateAction action) async {
+    // Convert the action to a JSON string
+    String actionJson = jsonEncode(action);
 
-      // Convert the order to a JSON string
-      String orderJson = jsonEncode(action);
+    // Wait for the response from the server
+    final response =  _broadcastStream.firstWhere((data) {
+      var decodedData = jsonDecode(data);
+      return decodedData['eventType'] == 'orderCreated';
+    });
 
-      // Send the order JSON string over the WebSocket connection
-      _channel?.sink.add(orderJson);
-      print('Order sent: $orderJson'); // Add this line
+    // Send the action JSON string over the WebSocket connection
+    _channel?.sink.add(actionJson);
 
-
-      // Wait for the response from the server
-      String response = await _broadcastStream.firstWhere((data) => jsonDecode(data)['action'] == 'orderCreateHandler');
-      print('Response received: $response'); // Add this line
-
-      // Extract the order ID from the response
-      String orderId = jsonDecode(response)['orderId'];
-
-      return orderId;
-    } catch (e) {
-      print('An error occurred while sending the order: $e');
-      // Handle the exception here. You might want to show an error message to the user,
-      // log the error, or take some other action.
-      throw e;
-    }
+    // Parse the response and return the order ID
+    var data = jsonDecode(await response);
+    return data['order']['Id'];
   }
 }
