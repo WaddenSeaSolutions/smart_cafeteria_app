@@ -1,59 +1,59 @@
 {
-  "eventType": "orderOptions",
+  "eventType": "OrderOptions",
   "orderOptions": [
     {
-      "id": 47,
-      "optionName": "for en ",
-      "active": true,
-      "deleted": false
+      "Id": 47,
+      "OptionName": "for en ",
+      "Active": true,
+      "Deleted": false
     },
     {
-      "id": 48,
-      "optionName": "vandmelon",
-      "active": true,
-      "deleted": false
+      "Id": 48,
+      "OptionName": "vandmelon",
+      "Active": true,
+      "Deleted": false
     },
     {
-      "id": 51,
-      "optionName": "s\u00FArstr\u00F8mmning",
-      "active": true,
-      "deleted": false
+      "Id": 51,
+      "OptionName": "s\u00FArstr\u00F8mmning",
+      "Active": true,
+      "Deleted": false
     },
     {
-      "id": 52,
-      "optionName": "oste kugler",
-      "active": true,
-      "deleted": false
+      "Id": 52,
+      "OptionName": "oste kugler",
+      "Active": true,
+      "Deleted": false
     },
     {
-      "id": 53,
-      "optionName": "br\u00E6ndte mandler",
-      "active": false,
-      "deleted": false
+      "Id": 53,
+      "OptionName": "br\u00E6ndte mandler",
+      "Active": false,
+      "Deleted": false
     },
     {
-      "id": 54,
-      "optionName": "r\u00F8de sure komfritter",
-      "active": false,
-      "deleted": false
+      "Id": 54,
+      "OptionName": "r\u00F8de sure komfritter",
+      "Active": false,
+      "Deleted": false
     },
     {
-      "id": 55,
-      "optionName": "Bulgor med skinke",
-      "active": true,
-      "deleted": false
+      "Id": 55,
+      "OptionName": "Bulgor med skinke",
+      "Active": true,
+      "Deleted": false
     },
     {
-      "id": 40,
-      "optionName": "",
-      "active": false,
-      "deleted": false
+      "Id": 40,
+      "OptionName": "",
+      "Active": false,
+      "Deleted": false
     },
     {
-      "id": 45,
-      "optionName": "kartoffelsalat",
-      "active": true,
-      "deleted": false
+      "Id": 45,
+      "OptionName": "kartoffelsalat",
+      "Active": true,
+      "Deleted": false
     }
   ]
 }
