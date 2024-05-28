@@ -92,5 +92,8 @@ class _SignUpFormState extends State<SignUpForm> {
     // Use WebSocketManager to send the data
     widget.webSocketManager.sendMessage(jsonData);
 
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('User $username registered'),
+    ));
   }
 }

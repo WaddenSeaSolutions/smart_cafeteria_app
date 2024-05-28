@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria_app/managers/JWTTokenStorage.dart';
 import 'package:smart_cafeteria_app/managers/events.dart';
-import 'package:smart_cafeteria_app/pages/sign_up_page.dart';
-import '../animation/scale_route.dart';
 import '../managers/websocket_manager.dart';
 
 class LoginPage extends StatelessWidget {
@@ -43,8 +41,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final _usernameController = TextEditingController(text: "andreas123");
-  final _passwordController = TextEditingController(text: "11521152");
+  final _usernameController = TextEditingController(text: "");
+  final _passwordController = TextEditingController(text: "");
   String? _jwtToken;
 
   late StreamSubscription _subscription;
@@ -72,7 +70,6 @@ class _LoginFormState extends State<LoginForm> {
         if (_jwtToken != null && _jwtToken!.isNotEmpty) {
           widget.jwtTokenStorage.storeJWTToken(_jwtToken!);
           Navigator.pushReplacementNamed(context, '/nav');
-          // You can now use the JWT token as needed (e.g., navigate to another page)
         }
       });
     });

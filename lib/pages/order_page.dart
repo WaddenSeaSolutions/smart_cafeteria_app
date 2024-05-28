@@ -78,7 +78,7 @@ class _OrderScreenState extends State<OrderScreen> {
   selectOption(OrderOption saladOption) {
     setState(() {
       if (selections.length < NumberOfPossibleSaledSelections) {
-        selections.add(saladOption.id);
+        selections.add(saladOption.Id);
       }
     });
   }
@@ -97,13 +97,13 @@ class _OrderScreenState extends State<OrderScreen> {
               itemCount: orderOptions.length,
               itemBuilder: (context, index) {
                 final saladOption = orderOptions[index];
-                if (saladOption.active) {
+                if (saladOption.Active) {
                   return ListTile(
-                    title: Text(saladOption.optionName),
-                    leading: Text(selections.contains(saladOption.id) ? "1x" : '0x'),
+                    title: Text(saladOption.OptionName),
+                    leading: Text(selections.contains(saladOption.Id) ? "1x" : '0x'),
                     // Display order count
                     trailing: ElevatedButton(
-                      onPressed: selections.contains(saladOption.id) ||
+                      onPressed: selections.contains(saladOption.Id) ||
                               selections.length >= NumberOfPossibleSaledSelections
                           ? null
                           : () => selectOption(saladOption),

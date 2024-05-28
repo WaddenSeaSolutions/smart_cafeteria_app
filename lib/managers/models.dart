@@ -6,10 +6,10 @@ part 'models.g.dart';
 @freezed
 class OrderOption with _$OrderOption{
   const factory OrderOption({
-    required String optionName,
-    required int id,
-    required bool active,
-    required bool deleted,
+    required String OptionName,
+    required int Id,
+    required bool Active,
+    required bool Deleted,
   }) = _OrderOption;
 
   factory OrderOption.fromJson(Map<String, dynamic> json) =>

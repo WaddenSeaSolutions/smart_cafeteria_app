@@ -20,10 +20,10 @@ OrderOption _$OrderOptionFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$OrderOption {
-  String get optionName => throw _privateConstructorUsedError;
-  int get id => throw _privateConstructorUsedError;
-  bool get active => throw _privateConstructorUsedError;
-  bool get deleted => throw _privateConstructorUsedError;
+  String get OptionName => throw _privateConstructorUsedError;
+  int get Id => throw _privateConstructorUsedError;
+  bool get Active => throw _privateConstructorUsedError;
+  bool get Deleted => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +37,7 @@ abstract class $OrderOptionCopyWith<$Res> {
           OrderOption value, $Res Function(OrderOption) then) =
       _$OrderOptionCopyWithImpl<$Res, OrderOption>;
   @useResult
-  $Res call({String optionName, int id, bool active, bool deleted});
+  $Res call({String OptionName, int Id, bool Active, bool Deleted});
 }
 
 /// @nodoc
@@ -53,27 +53,27 @@ class _$OrderOptionCopyWithImpl<$Res, $Val extends OrderOption>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? optionName = null,
-    Object? id = null,
-    Object? active = null,
-    Object? deleted = null,
+    Object? OptionName = null,
+    Object? Id = null,
+    Object? Active = null,
+    Object? Deleted = null,
   }) {
     return _then(_value.copyWith(
-      optionName: null == optionName
-          ? _value.optionName
-          : optionName // ignore: cast_nullable_to_non_nullable
+      OptionName: null == OptionName
+          ? _value.OptionName
+          : OptionName // ignore: cast_nullable_to_non_nullable
               as String,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      Id: null == Id
+          ? _value.Id
+          : Id // ignore: cast_nullable_to_non_nullable
               as int,
-      active: null == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
+      Active: null == Active
+          ? _value.Active
+          : Active // ignore: cast_nullable_to_non_nullable
               as bool,
-      deleted: null == deleted
-          ? _value.deleted
-          : deleted // ignore: cast_nullable_to_non_nullable
+      Deleted: null == Deleted
+          ? _value.Deleted
+          : Deleted // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -87,7 +87,7 @@ abstract class _$$OrderOptionImplCopyWith<$Res>
       __$$OrderOptionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String optionName, int id, bool active, bool deleted});
+  $Res call({String OptionName, int Id, bool Active, bool Deleted});
 }
 
 /// @nodoc
@@ -101,27 +101,27 @@ class __$$OrderOptionImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? optionName = null,
-    Object? id = null,
-    Object? active = null,
-    Object? deleted = null,
+    Object? OptionName = null,
+    Object? Id = null,
+    Object? Active = null,
+    Object? Deleted = null,
   }) {
     return _then(_$OrderOptionImpl(
-      optionName: null == optionName
-          ? _value.optionName
-          : optionName // ignore: cast_nullable_to_non_nullable
+      OptionName: null == OptionName
+          ? _value.OptionName
+          : OptionName // ignore: cast_nullable_to_non_nullable
               as String,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      Id: null == Id
+          ? _value.Id
+          : Id // ignore: cast_nullable_to_non_nullable
               as int,
-      active: null == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
+      Active: null == Active
+          ? _value.Active
+          : Active // ignore: cast_nullable_to_non_nullable
               as bool,
-      deleted: null == deleted
-          ? _value.deleted
-          : deleted // ignore: cast_nullable_to_non_nullable
+      Deleted: null == Deleted
+          ? _value.Deleted
+          : Deleted // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -131,26 +131,26 @@ class __$$OrderOptionImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$OrderOptionImpl implements _OrderOption {
   const _$OrderOptionImpl(
-      {required this.optionName,
-      required this.id,
-      required this.active,
-      required this.deleted});
+      {required this.OptionName,
+      required this.Id,
+      required this.Active,
+      required this.Deleted});
 
   factory _$OrderOptionImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderOptionImplFromJson(json);
 
   @override
-  final String optionName;
+  final String OptionName;
   @override
-  final int id;
+  final int Id;
   @override
-  final bool active;
+  final bool Active;
   @override
-  final bool deleted;
+  final bool Deleted;
 
   @override
   String toString() {
-    return 'OrderOption(optionName: $optionName, id: $id, active: $active, deleted: $deleted)';
+    return 'OrderOption(OptionName: $OptionName, Id: $Id, Active: $Active, Deleted: $Deleted)';
   }
 
   @override
@@ -158,16 +158,16 @@ class _$OrderOptionImpl implements _OrderOption {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$OrderOptionImpl &&
-            (identical(other.optionName, optionName) ||
-                other.optionName == optionName) &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.active, active) || other.active == active) &&
-            (identical(other.deleted, deleted) || other.deleted == deleted));
+            (identical(other.OptionName, OptionName) ||
+                other.OptionName == OptionName) &&
+            (identical(other.Id, Id) || other.Id == Id) &&
+            (identical(other.Active, Active) || other.Active == Active) &&
+            (identical(other.Deleted, Deleted) || other.Deleted == Deleted));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, optionName, id, active, deleted);
+  int get hashCode => Object.hash(runtimeType, OptionName, Id, Active, Deleted);
 
   @JsonKey(ignore: true)
   @override
@@ -185,22 +185,22 @@ class _$OrderOptionImpl implements _OrderOption {
 
 abstract class _OrderOption implements OrderOption {
   const factory _OrderOption(
-      {required final String optionName,
-      required final int id,
-      required final bool active,
-      required final bool deleted}) = _$OrderOptionImpl;
+      {required final String OptionName,
+      required final int Id,
+      required final bool Active,
+      required final bool Deleted}) = _$OrderOptionImpl;
 
   factory _OrderOption.fromJson(Map<String, dynamic> json) =
       _$OrderOptionImpl.fromJson;
 
   @override
-  String get optionName;
+  String get OptionName;
   @override
-  int get id;
+  int get Id;
   @override
-  bool get active;
+  bool get Active;
   @override
-  bool get deleted;
+  bool get Deleted;
   @override
   @JsonKey(ignore: true)
   _$$OrderOptionImplCopyWith<_$OrderOptionImpl> get copyWith =>
