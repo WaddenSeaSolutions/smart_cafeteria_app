@@ -14,7 +14,7 @@ void main() {
 class CafeteriaApp extends StatelessWidget {
   CafeteriaApp() {
     // Get the singleton instance of WebSocketManager and connect
-    WebSocketManager.instance.connect('ws://10.0.2.2:8181');
+    WebSocketManager.instance.connect('wss://smartcafeteriasocket-58246761d167.herokuapp.com/');
   }
 
 
